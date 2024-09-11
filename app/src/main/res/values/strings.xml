@@ -1,5 +1,63 @@
 <resources>
     <string name="app_name">SHOtReview</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--Onboarding-->
+    <string name="motto1">Fall in Love with</string>
+    <string name="motto2">Coffee in Blissful</string>
+    <string name="motto3">Delight!</string>
+
+    <string name="explain1">Step into our coffee haven, where every cup tells</string>
+    <string name="explain2">story and your reviews help others find their</string>
+    <string name="explain3">perfect brew.</string>
+
+    <string name="startBtn">Get Started</string>
+
+    <!--Login-->
+    <string name="welcome">Welcome</string>
+    <string name="back">Back!</string>
+    <string name="login1">Login</string>
+    <string name="register1">Register</string>
+
+    <!--Register-->
+    <string name="create">Create Account</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+
+    <!--Home-->
+    <string name="halo">Hello,</string>
+    <string name="search">Find your shop or city...</string>
+    <string name="popular">Popular Coffee Shop</string>
+
+    <!--Detail Kopi Shop-->
+    <string name="gallery">Coffee Gallery</string>
+    <string name="menu">Menu</string>
+    <string name="facilities">Public Facilities</string>
+    <string name="rating">Rating and Reviews</string>
+    <string name="writeBtn">Write Review</string>
+
+    <!--Review-->
+    <string name="judul">Review</string>
+    <string name="rate">Rating</string>
+    <string name="desc">Decription</string>
+    <string name="sbmtBtn">Submit</string>
+
+    <!--Favorite-->
+    <string name="fav">Favorite Coffee Shop</string>
+
+    <!--Profile-->
+    <string name="profile">Profile</string>
+    <string name="prof">My profile</string>
+    <string name="name">Name</string>
+    <string name="number">Number of Reviews</string>
+    <string name="editBtn">Edit My Profile</string>
+    <string name="logBtn">Logout</string>
+
+    <!--Edit Profile-->
+    <string name="edprofile">Edit Profile</string>
+    <string name="saveBtn">Save</string>
+
+    <!--Navbar-->
+    <string name="homeBtn">Home</string>
+    <string name="favBtn">Favorite</string>
+    <string name="profileBtn">Profile</string>
 </resources>

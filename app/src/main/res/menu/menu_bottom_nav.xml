@@ -4,16 +4,16 @@
     <item
         android:id="@+id/menuHome"
         android:icon="@drawable/icon_home"
-        android:title="Home" />
+        android:title="@string/homeBtn" />
 
     <item
         android:id="@+id/menuFavorite"
         android:icon="@drawable/icon_favorite"
-        android:title="Favorite" />
+        android:title="@string/favBtn" />
 
     <item
         android:id="@+id/menuProfile"
         android:icon="@drawable/icon_profile"
-        android:title="Profile" />
+        android:title="@string/profileBtn" />
 
 </menu>

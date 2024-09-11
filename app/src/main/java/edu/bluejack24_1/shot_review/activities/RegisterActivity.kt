@@ -1,13 +1,14 @@
 package edu.bluejack24_1.shot_review.activities
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import com.google.firebase.firestore.FirebaseFirestore
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import edu.bluejack24_1.shot_review.databinding.ActivityRegisterBinding
 import edu.bluejack24_1.shot_review.models.Users
-import com.google.firebase.auth.FirebaseAuth
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -22,56 +23,68 @@ class RegisterActivity : AppCompatActivity() {
 
         fAuth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
-//        FirebaseFirestore.setLoggingEnabled(true)
-//        fAuth.setLanguageCode("en")
 
-//        Handle Login
+        // Handle Login
         binding.btnLogin.setOnClickListener {
             val intentToLogin = Intent(this, LoginActivity::class.java)
             startActivity(intentToLogin)
         }
 
-//        Handle Register
+        // Handle Register
         binding.btnRegister.setOnClickListener {
             val username = binding.etUsername.text.toString()
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
-            if (username.isNotEmpty() || email.isNotEmpty() || password.isNotEmpty() || confirmPassword.isNotEmpty()) {
+            if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                 if (password.length >= 6) {
                     if (password == confirmPassword) {
-                        // ini create ke auth
+                        // Create user with email and password
                         fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                             if (it.isSuccessful) {
-                                // Get data from object
-                                val user = Users (
-                                    userId = fAuth.currentUser?.uid?:"",
+                                // Create Users object
+                                val user = Users(
+                                    userId = fAuth.currentUser?.uid ?: "",
                                     username = username,
                                     email = email,
                                     password = password,
                                     profilePicture = "",
-                                    bio = "",
+                                    bio = ""
                                 )
 
-                                // Save ke firestornya
+                                // Save user to Firestore
                                 db.collection("users").document(user.userId).set(user).addOnCompleteListener {
-                                    val intentToLogin = Intent(this, LoginActivity::class.java)
-                                    startActivity(intentToLogin)
+                                    showDialog("Registration Successful", "Your account has been created successfully.") {
+                                        val intentToLogin = Intent(this, LoginActivity::class.java)
+                                        startActivity(intentToLogin)
+                                    }
                                 }
                             } else {
-                                Toast.makeText(this, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                                showDialog("Registration Failed", it.exception?.message ?: "An unknown error occurred.")
                             }
                         }
                     } else {
-                        Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show()
+                        showDialog("Error", "Passwords do not match!")
                     }
                 } else {
-                    Toast.makeText(this, "Password must be at least 6 characters!", Toast.LENGTH_SHORT).show()
+                    showDialog("Error", "Password must be at least 6 characters!")
                 }
             } else {
-                Toast.makeText(this, "Please fill in all the fields!", Toast.LENGTH_SHORT).show()
+                showDialog("Error", "Please fill in all the fields!")
             }
         }
+    }
+
+    // Function to show alert dialog
+    private fun showDialog(title: String, message: String, onPositiveAction: (() -> Unit)? = null) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+            onPositiveAction?.invoke()
+        }
+        builder.create().show()
     }
 }

@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:text="Fall in Love with"
+            android:text="@string/motto1"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="32sp"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:text="Coffee in Blissful"
+            android:text="@string/motto2"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="32sp"
@@ -46,7 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins"
-            android:text="Delight!"
+            android:text="@string/motto3"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="32sp"
@@ -55,7 +55,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Step into our coffee haven, where every cup tells"
+            android:text="@string/explain1"
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="16sp" />
@@ -63,7 +63,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="story and your reviews help others find their"
+            android:text="@string/explain2"
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="16sp" />
@@ -71,7 +71,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="perfect brew."
+            android:text="@string/explain3"
             android:textAlignment="center"
             android:textColor="@color/gray"
             android:textSize="16sp" />
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
-            android:text="Get Started"
+            android:text="@string/startBtn"
             android:textColor="@color/brown"
             android:textStyle="bold"
             android:textSize="16sp"

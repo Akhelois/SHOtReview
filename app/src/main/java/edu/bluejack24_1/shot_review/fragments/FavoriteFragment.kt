@@ -26,49 +26,51 @@ class FavoriteFragment : Fragment() {
     private lateinit var db: FirebaseFirestore
     private val coffeeShops = mutableListOf<CoffeeShops>()
     private var favoriteListenerRegistration: ListenerRegistration? = null
+    private lateinit var coffeeShopAdapter: CoffeeShopAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFavoriteBinding.inflate(inflater, container, false)
-        fAuth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
+        fAuth = FirebaseAuth.getInstance() // Inisialisasi FirebaseAuth untuk autentikasi pengguna
+        db = FirebaseFirestore.getInstance() // Inisialisasi Firestore untuk mengakses database
 
-        val coffeeShopAdapter = CoffeeShopAdapter(coffeeShops)
+        coffeeShopAdapter = CoffeeShopAdapter(coffeeShops) // Membuat adapter untuk menampilkan daftar coffee shops
         coffeeShopAdapter.setOnItemClickCallback(object : CoffeeShopAdapter.IOnItemClickCallback {
             override fun onItemClick(coffeeShops: CoffeeShops) {
+                // Intent untuk memulai aktivitas detail coffee shop saat item diklik
                 val intent = Intent(context, CoffeeShopDetailActivity::class.java)
                 intent.putExtra("DATA", coffeeShops)
                 startActivity(intent)
             }
         })
 
+        // Mengatur RecyclerView dengan adapter dan GridLayoutManager
         binding.rvFavoriteCoffeeShops.adapter = coffeeShopAdapter
         binding.rvFavoriteCoffeeShops.layoutManager = GridLayoutManager(context, 2)
         binding.rvFavoriteCoffeeShops.setHasFixedSize(true)
 
-        val userId = fAuth.currentUser?.uid ?: return binding.root
+        val userId = fAuth.currentUser?.uid ?: return binding.root // Mengambil userId dari pengguna yang sedang login
 
-        val docRef = db.collection("users").document(userId.toString())
+        val docRef = db.collection("users").document(userId.toString()) // Mengambil data pengguna dari Firestore
 
-        // Set username dan profile picture dari Firestore
+        // Mengambil dan menampilkan foto profil dari Firestore
         docRef.get().addOnSuccessListener {
             if (it.exists()) {
                 val profilePictureUrl = it.getString("profilePicture")
-
                 Glide.with(this)
-                    .load(profilePictureUrl)
+                    .load(profilePictureUrl) // Menampilkan foto profil pengguna
                     .placeholder(R.drawable.banner_profile)
                     .error(R.drawable.banner_profile)
                     .circleCrop()
                     .into(binding.ivProfilePicture)
             } else {
-                Toast.makeText(requireContext(), "Document not found", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Document tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // Load favorite coffee shops in real-time
+        // Memuat coffee shop favorit secara real-time
         listenForFavoriteCoffeeShops(userId)
 
         return binding.root
@@ -76,22 +78,22 @@ class FavoriteFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Remove Firestore listener to prevent memory leaks
+        // Menghapus listener Firestore untuk mencegah kebocoran memori
         favoriteListenerRegistration?.remove()
     }
 
     private fun listenForFavoriteCoffeeShops(userId: String) {
-        // Start listening for changes in the 'favorites' collection for the current user
+        // Mendengarkan perubahan pada koleksi 'favorites' untuk pengguna saat ini secara real-time
         favoriteListenerRegistration = db.collection("favorites")
             .whereEqualTo("userId", userId)
             .addSnapshotListener { snapshots, error ->
                 if (error != null) {
-                    Log.e("Firebase", "Error listening to favorites", error)
+                    Log.e("Firebase", "Error mendengarkan data favorit", error)
                     return@addSnapshotListener
                 }
 
                 if (snapshots != null) {
-                    coffeeShops.clear()  // Clear existing coffee shops
+                    coffeeShops.clear()  // Mengosongkan daftar coffee shops saat ini
                     for (document in snapshots) {
                         val coffeeShopId = document.getString("coffeeShopId") ?: ""
                         db.collection("CoffeeShops")
@@ -111,13 +113,47 @@ class FavoriteFragment : Fragment() {
                                         ratings = doc.get("ratings") as? List<Double> ?: listOf()
                                     )
                                     coffeeShops.add(coffeeShop)
-                                    binding.rvFavoriteCoffeeShops.adapter?.notifyDataSetChanged()  // Notify the adapter
+
+                                    // Memulai pendengaran ulasan untuk meng-update rating
+                                    listenForReviews(coffeeShop.coffeeShopId)
                                 }
                             }
                             .addOnFailureListener { error ->
-                                Log.e("Firebase", "Error getting coffee shop details", error)
+                                Log.e("Firebase", "Error mendapatkan detail coffee shop", error)
                             }
                     }
+                    binding.rvFavoriteCoffeeShops.adapter?.notifyDataSetChanged() // Memberi tahu adapter bahwa data telah berubah
+                }
+            }
+    }
+
+    private fun listenForReviews(coffeeShopId: String) {
+        // Mendengarkan perubahan pada koleksi 'Review' untuk coffee shop tertentu
+        db.collection("Review")
+            .whereEqualTo("coffeeShopId", coffeeShopId)
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.e("FavoriteFragment", "Error mendengarkan ulasan", e)
+                    return@addSnapshotListener
+                }
+
+                snapshots?.let {
+                    val updatedCoffeeShops = coffeeShops.map { coffeeShop ->
+                        if (coffeeShop.coffeeShopId == coffeeShopId) {
+                            val ratingsList = mutableListOf<Int>()
+                            for (document in it) {
+                                val rating = document.getLong("rating")?.toInt() ?: 0
+                                ratingsList.add(rating)
+                            }
+                            coffeeShop.copy(ratings = ratingsList.map { it.toDouble() })
+                        } else {
+                            coffeeShop
+                        }
+                    }
+
+                    coffeeShops.clear()
+                    coffeeShops.addAll(updatedCoffeeShops)
+                    coffeeShopAdapter.notifyDataSetChanged()
                 }
             }
     }

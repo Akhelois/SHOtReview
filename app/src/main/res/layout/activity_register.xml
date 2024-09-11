@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/sora"
-            android:text="Create Account"
+            android:text="@string/create"
             android:textColor="@color/brown"
             android:textSize="32sp"
             android:textStyle="bold" />
@@ -94,14 +94,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/brown"
-            android:text="Login" />
+            android:text="@string/login" />
 
         <Button
             android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/light_brown"
-            android:text="Register" />
+            android:text="@string/register" />
 
         <!--        <com.google.android.material.button.MaterialButton-->
         <!--            android:layout_width="match_parent"-->

@@ -96,22 +96,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun switchFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
-
-        // Hide current fragment if not null
-        currentFragment?.let {
-            transaction.hide(it)
+        if (fragment != activeFragment) {
+            supportFragmentManager.beginTransaction().apply {
+                activeFragment?.let { hide(it) }
+                show(fragment)
+            }.commit()
+            activeFragment = fragment
         }
-
-        // Show the selected fragment
-        if (fragment.isAdded) {
-            transaction.show(fragment)
-        } else {
-            transaction.add(R.id.fragmentContainer, fragment)
-        }
-
-        transaction.commit()
     }
 
     fun showEditProfileFragment() {
