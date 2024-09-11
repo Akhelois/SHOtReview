@@ -67,7 +67,7 @@ class ReviewActivity : AppCompatActivity() {
 
                 // Validati legnth dekripsi
                 if (description.length < 5) {
-                    Toast.makeText(this, "Deskripsi harus lebih dari 5 karakter", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Deskripsi harus lebih dari 5 karakter.", Toast.LENGTH_SHORT).show()
                     return@setOnClickListener
                 }
 
