@@ -1,0 +1,14 @@
+<!-- res/drawable/profile_picture_border.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <solid android:color="@android:color/transparent" />
+
+    <stroke
+        android:width="8dp"
+        android:color="@color/light_brown" />
+
+    <size
+        android:width="120dp"
+        android:height="120dp" />
+</shape>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "461593777054",
+    "project_id": "coffeeshop-d5940",
+    "storage_bucket": "coffeeshop-d5940.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461593777054:android:2d2e03115c31ff88cf7c8f",
+        "android_client_info": {
+          "package_name": "edu.bluejack24_1.shot_review"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAzY1Dusk0sBFIUMSsTlRNXrDRTSxHImM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461593777054:android:c71b31a1d15f095acf7c8f",
+        "android_client_info": {
+          "package_name": "edu.bluejack24_1.shot_review"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAzY1Dusk0sBFIUMSsTlRNXrDRTSxHImM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

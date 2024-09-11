@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="brown">#230C02</color>
+    <color name="light_brown">#82583D</color>
+    <color name="gray">#697565</color>
+    <color name="light_gray">#F2E5E5</color>
+    <color name="semin_gray_white">#FFF5E9</color>
+    <color name="cream">#EEDCC6</color>
+    <color name="red">#FF2400</color>
+</resources>

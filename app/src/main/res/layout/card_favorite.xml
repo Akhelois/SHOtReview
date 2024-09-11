@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:layout_constraintCircleRadius="10dp">
+
+    <data>
+
+        <variable
+            name="coffeeShop"
+            type="edu.bluejack24_1.shot_review.models.CoffeeShops" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_marginBottom="5dp"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{coffeeShop.coffeeShopPicture}"
+                tools:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:padding="8dp"
+                android:text="@{coffeeShop.coffeeShopName}"
+                android:textSize="18sp"
+                tools:text="Coffee Shop Name" />
+
+            <TextView
+                android:id="@+id/tvRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:drawableRight="@drawable/icon_rating"
+                android:drawablePadding="5dp"
+                android:text="@{String.valueOf(coffeeShop.averageRating)}"
+                android:textSize="16sp"
+                tools:text="Ratings" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
