@@ -46,10 +46,15 @@ class HomeFragment : Fragment() {
 
         // Mengatur nama pengguna dan gambar profil dari Firestore
         val docRef = db.collection("users").document(intentUID.toString())
-        docRef.get().addOnSuccessListener {
-            if (it.exists()) {
-                val username = it.getString("username")
-                val profilePictureUrl = it.getString("profilePicture")
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Toast.makeText(requireContext(), "Listen failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                val username = snapshot.getString("username")
+                val profilePictureUrl = snapshot.getString("profilePicture")
                 binding.tvUsername.text = "Hello, ${username.toString()}"
 
                 Glide.with(this)
@@ -59,7 +64,7 @@ class HomeFragment : Fragment() {
                     .circleCrop()
                     .into(binding.ivProfilePicture)
             } else {
-                Toast.makeText(requireContext(), "Dokumen tidak ditemukan", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Document not found", Toast.LENGTH_SHORT).show()
             }
         }
 

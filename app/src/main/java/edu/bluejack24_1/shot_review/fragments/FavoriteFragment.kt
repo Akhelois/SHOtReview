@@ -37,7 +37,8 @@ class FavoriteFragment : Fragment() {
         fAuth = FirebaseAuth.getInstance() // Inisialisasi FirebaseAuth untuk autentikasi pengguna
         db = FirebaseFirestore.getInstance() // Inisialisasi Firestore untuk mengakses database
 
-        coffeeShopAdapter = CoffeeShopAdapter(coffeeShops) // Membuat adapter untuk menampilkan daftar coffee shops
+        coffeeShopAdapter =
+            CoffeeShopAdapter(coffeeShops) // Membuat adapter untuk menampilkan daftar coffee shops
         coffeeShopAdapter.setOnItemClickCallback(object : CoffeeShopAdapter.IOnItemClickCallback {
             override fun onItemClick(coffeeShops: CoffeeShops) {
                 // Intent untuk memulai aktivitas detail coffee shop saat item diklik
@@ -52,22 +53,31 @@ class FavoriteFragment : Fragment() {
         binding.rvFavoriteCoffeeShops.layoutManager = GridLayoutManager(context, 2)
         binding.rvFavoriteCoffeeShops.setHasFixedSize(true)
 
-        val userId = fAuth.currentUser?.uid ?: return binding.root // Mengambil userId dari pengguna yang sedang login
+        val userId = fAuth.currentUser?.uid
+            ?: return binding.root // Mengambil userId dari pengguna yang sedang login
 
-        val docRef = db.collection("users").document(userId.toString()) // Mengambil data pengguna dari Firestore
+        val docRef = db.collection("users")
+            .document(userId.toString()) // Mengambil data pengguna dari Firestore
 
         // Mengambil dan menampilkan foto profil dari Firestore
-        docRef.get().addOnSuccessListener {
-            if (it.exists()) {
-                val profilePictureUrl = it.getString("profilePicture")
+        docRef.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Toast.makeText(requireContext(), "Listen failed: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                val profilePictureUrl = snapshot.getString("profilePicture")
+
                 Glide.with(this)
-                    .load(profilePictureUrl) // Menampilkan foto profil pengguna
+                    .load(profilePictureUrl)
                     .placeholder(R.drawable.banner_profile)
                     .error(R.drawable.banner_profile)
                     .circleCrop()
                     .into(binding.ivProfilePicture)
             } else {
-                Toast.makeText(requireContext(), "Document tidak ditemukan", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Document not found", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -78,7 +88,8 @@ class FavoriteFragment : Fragment() {
         binding.ivLogo.setOnClickListener {
             // Navigate to HomeFragment
             parentFragmentManager.beginTransaction().apply {
-                var homeFragment = parentFragmentManager.findFragmentByTag("HomeFragment") as? HomeFragment
+                var homeFragment =
+                    parentFragmentManager.findFragmentByTag("HomeFragment") as? HomeFragment
                 if (homeFragment == null) {
                     homeFragment = HomeFragment()
                     add(R.id.fragmentContainer, homeFragment, "HomeFragment")
@@ -96,7 +107,8 @@ class FavoriteFragment : Fragment() {
         binding.ivProfilePicture.setOnClickListener {
             // Navigate to ProfileFragment
             parentFragmentManager.beginTransaction().apply {
-                var profileFragment = parentFragmentManager.findFragmentByTag("ProfileFragment") as? ProfileFragment
+                var profileFragment =
+                    parentFragmentManager.findFragmentByTag("ProfileFragment") as? ProfileFragment
                 if (profileFragment == null) {
                     profileFragment = ProfileFragment()
                     add(R.id.fragmentContainer, profileFragment, "ProfileFragment")
@@ -142,11 +154,15 @@ class FavoriteFragment : Fragment() {
                                     val coffeeShop = CoffeeShops(
                                         coffeeShopId = doc.getString("coffeeShopId") ?: "",
                                         coffeeShopName = doc.getString("coffeeShopName") ?: "",
-                                        coffeeShopAddress = doc.getString("coffeeShopAddress") ?: "",
-                                        coffeeShopPicture = doc.getString("coffeeShopPicture") ?: "",
+                                        coffeeShopAddress = doc.getString("coffeeShopAddress")
+                                            ?: "",
+                                        coffeeShopPicture = doc.getString("coffeeShopPicture")
+                                            ?: "",
                                         coffeeShopTime = doc.getString("coffeeShopTime") ?: "",
-                                        coffeeShopPhoneNumber = doc.getString("coffeeShopPhoneNumber") ?: "",
-                                        coffeeShopGallery = doc.get("coffeeShopGallery") as? List<String> ?: listOf(),
+                                        coffeeShopPhoneNumber = doc.getString("coffeeShopPhoneNumber")
+                                            ?: "",
+                                        coffeeShopGallery = doc.get("coffeeShopGallery") as? List<String>
+                                            ?: listOf(),
                                         coffeeShopMenu = doc.getString("coffeeShopMenu") ?: "",
                                         ratings = doc.get("ratings") as? List<Double> ?: listOf()
                                     )

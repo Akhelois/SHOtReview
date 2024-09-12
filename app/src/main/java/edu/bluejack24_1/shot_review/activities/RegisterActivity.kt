@@ -80,7 +80,7 @@ class RegisterActivity : AppCompatActivity() {
                         showDialog("Error", "Passwords do not match!")
                     }
                 } else {
-                    showDialog("Error", "Password must be at least 6 characters!")
+                    showDialog("Error", "User must more than 3 characters or Password must be at least 6 characters!")
                 }
             } else {
                 showDialog("Error", "Please fill in all the fields!")
