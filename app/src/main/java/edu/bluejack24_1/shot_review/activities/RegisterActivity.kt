@@ -38,30 +38,42 @@ class RegisterActivity : AppCompatActivity() {
             val confirmPassword = binding.etConfirmPassword.text.toString()
 
             if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
-                if (password.length >= 6) {
+                if (password.length >= 6 && username.length > 3) {
                     if (password == confirmPassword) {
-                        // Create user with email and password
-                        fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
-                            if (it.isSuccessful) {
-                                // Create Users object
-                                val user = Users(
-                                    userId = fAuth.currentUser?.uid ?: "",
-                                    username = username,
-                                    email = email,
-                                    password = password,
-                                    profilePicture = "",
-                                    bio = ""
-                                )
+                        // Check if email already exists in Firestore
+                        db.collection("users").whereEqualTo("email", email).get().addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                if (task.result.isEmpty) {
+                                    // Email doesn't exist, proceed with registration
+                                    fAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { authTask ->
+                                        if (authTask.isSuccessful) {
+                                            // Create Users object
+                                            val user = Users(
+                                                userId = fAuth.currentUser?.uid ?: "",
+                                                username = username,
+                                                email = email,
+                                                password = password,
+                                                profilePicture = "",
+                                                bio = ""
+                                            )
 
-                                // Save user to Firestore
-                                db.collection("users").document(user.userId).set(user).addOnCompleteListener {
-                                    showDialog("Registration Successful", "Your account has been created successfully.") {
-                                        val intentToLogin = Intent(this, LoginActivity::class.java)
-                                        startActivity(intentToLogin)
+                                            // Save user to Firestore
+                                            db.collection("users").document(user.userId).set(user).addOnCompleteListener {
+                                                showDialog("Registration Successful", "Your account has been created successfully.") {
+                                                    val intentToLogin = Intent(this, LoginActivity::class.java)
+                                                    startActivity(intentToLogin)
+                                                }
+                                            }
+                                        } else {
+                                            showDialog("Registration Failed", authTask.exception?.message ?: "An unknown error occurred.")
+                                        }
                                     }
+                                } else {
+                                    // Email already exists
+                                    showDialog("Error", "Email is already registered!")
                                 }
                             } else {
-                                showDialog("Registration Failed", it.exception?.message ?: "An unknown error occurred.")
+                                showDialog("Error", "Failed to check email uniqueness. Please try again.")
                             }
                         }
                     } else {

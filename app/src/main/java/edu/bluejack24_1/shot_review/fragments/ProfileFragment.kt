@@ -137,6 +137,25 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        // Mengatur logo untuk kembali ke home
+        binding.ivLogo.setOnClickListener {
+            // Navigate to HomeFragment
+            parentFragmentManager.beginTransaction().apply {
+                var homeFragment = parentFragmentManager.findFragmentByTag("HomeFragment") as? HomeFragment
+                if (homeFragment == null) {
+                    homeFragment = HomeFragment()
+                    add(R.id.fragmentContainer, homeFragment, "HomeFragment")
+                } else {
+                    show(homeFragment)
+                }
+                hide(this@ProfileFragment)
+                addToBackStack(null)
+            }.commit()
+
+            // Update bottom navigation selected item
+            (activity as MainActivity).binding.botNav.selectedItemId = R.id.menuHome
+        }
+
         binding.btnEditProfile.setOnClickListener {
             (activity as? MainActivity)?.showEditProfileFragment()
         }

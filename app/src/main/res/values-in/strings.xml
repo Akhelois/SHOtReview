@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SHOtReview</string>
+
+    <!--Onboarding-->
+    <string name="motto1">Jatuh Cinta dgn</string>
+    <string name="motto2">Kopi dlm Kenikmatan</string>
+    <string name="motto3">Yg Membahagiakan!</string>
+
+    <string name="explain1">Masuklah ke surga kopi yang setiap cangkirnya</string>
+    <string name="explain2">punya kisah dan ulasanmu membantu orang lain</string>
+    <string name="explain3">menemukan seduhan yang sempurna.</string>
+
+    <string name="startBtn">Mulai</string>
+
+    <!--Login-->
+    <string name="welcome">Selamat</string>
+    <string name="back">Datang Kembali!</string>
+    <string name="login1">Masuk</string>
+    <string name="register1">Daftar</string>
+
+    <!--Register-->
+    <string name="create">Buat Akun</string>
+    <string name="login">Masuk</string>
+    <string name="register">Daftar</string>
+
+    <!--Home-->
+    <string name="halo">Halo,</string>
+    <string name="search">Temukan toko atau kota Anda…</string>
+    <string name="popular">Toko Kopi Populer</string>
+
+    <!--Detail Kopi Shop-->
+    <string name="gallery">Galeri Kopi</string>
+    <string name="menu">Menu</string>
+    <string name="facilities">Fasilitas Umum</string>
+    <string name="rating">Rating dan Ulasan</string>
+    <string name="writeBtn">Tulis Ulasan</string>
+
+    <!--Review-->
+    <string name="judul">Ulasan</string>
+    <string name="rate">Penilaian</string>
+    <string name="desc">Deskripsi</string>
+    <string name="sbmtBtn">Kirim</string>
+
+    <!--Favorite-->
+    <string name="fav">Toko Kopi Favorit</string>
+
+    <!--Profile-->
+    <string name="profile">Profil</string>
+    <string name="prof">Profil Saya</string>
+    <string name="name">Nama</string>
+    <string name="number">Jumlah Ulasan</string>
+    <string name="editBtn">Edit Profil Saya</string>
+    <string name="logBtn">Keluar</string>
+
+    <!--Edit Profile-->
+    <string name="edprofile">Edit Profil</string>
+    <string name="saveBtn">Simpan</string>
+
+    <!--Navbar-->
+    <string name="homeBtn">Beranda</string>
+    <string name="favBtn">Favorit</string>
+    <string name="profileBtn">Profil</string>
+
+</resources>
