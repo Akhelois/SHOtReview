@@ -15,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import edu.bluejack24_1.shot_review.R
 import edu.bluejack24_1.shot_review.activities.CoffeeShopDetailActivity
+import edu.bluejack24_1.shot_review.activities.MainActivity
 import edu.bluejack24_1.shot_review.adapters.CoffeeShopAdapter
 import edu.bluejack24_1.shot_review.databinding.FragmentFavoriteBinding
 import edu.bluejack24_1.shot_review.models.CoffeeShops
@@ -72,6 +73,43 @@ class FavoriteFragment : Fragment() {
 
         // Memuat coffee shop favorit secara real-time
         listenForFavoriteCoffeeShops(userId)
+
+        // Mengatur logo untuk kembali ke home
+        binding.ivLogo.setOnClickListener {
+            // Navigate to HomeFragment
+            parentFragmentManager.beginTransaction().apply {
+                var homeFragment = parentFragmentManager.findFragmentByTag("HomeFragment") as? HomeFragment
+                if (homeFragment == null) {
+                    homeFragment = HomeFragment()
+                    add(R.id.fragmentContainer, homeFragment, "HomeFragment")
+                } else {
+                    show(homeFragment)
+                }
+                hide(this@FavoriteFragment)
+                addToBackStack(null)
+            }.commit()
+
+            // Update bottom navigation selected item
+            (activity as MainActivity).binding.botNav.selectedItemId = R.id.menuHome
+        }
+
+        binding.ivProfilePicture.setOnClickListener {
+            // Navigate to ProfileFragment
+            parentFragmentManager.beginTransaction().apply {
+                var profileFragment = parentFragmentManager.findFragmentByTag("ProfileFragment") as? ProfileFragment
+                if (profileFragment == null) {
+                    profileFragment = ProfileFragment()
+                    add(R.id.fragmentContainer, profileFragment, "ProfileFragment")
+                } else {
+                    show(profileFragment)
+                }
+                hide(this@FavoriteFragment)
+                addToBackStack(null)
+            }.commit()
+
+            // Update bottom navigation selected item
+            (activity as MainActivity).binding.botNav.selectedItemId = R.id.menuProfile
+        }
 
         return binding.root
     }

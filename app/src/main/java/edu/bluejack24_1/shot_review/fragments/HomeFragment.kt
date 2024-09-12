@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.firestore.FirebaseFirestore
 import edu.bluejack24_1.shot_review.R
 import edu.bluejack24_1.shot_review.activities.CoffeeShopDetailActivity
+import edu.bluejack24_1.shot_review.activities.MainActivity
 import edu.bluejack24_1.shot_review.databinding.FragmentHomeBinding
 import edu.bluejack24_1.shot_review.adapters.CoffeeShopAdapter
 import edu.bluejack24_1.shot_review.models.CoffeeShops
@@ -98,29 +99,39 @@ class HomeFragment : Fragment() {
 
         // Mengatur logo untuk kembali ke home
         binding.ivLogo.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, HomeFragment())
-                .addToBackStack(null)
-                .commit()
+            // Jika ada fragment lain di backstack, kembali ke HomeFragment
+            if (parentFragmentManager.backStackEntryCount > 0) {
+                parentFragmentManager.popBackStack("HomeFragment", 0)
+            } else {
+                // Jika tidak ada di backstack, tambahkan atau tampilkan HomeFragment
+                val homeFragment = parentFragmentManager.findFragmentByTag("HomeFragment") as? HomeFragment ?: HomeFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("uid", arguments?.getString("uid"))
+                    }
+                }
+                parentFragmentManager.beginTransaction().apply {
+                    replace(R.id.fragmentContainer, homeFragment, "HomeFragment")
+                    addToBackStack("HomeFragment")
+                }.commit()
+            }
         }
 
-        // Mengatur gambar profil untuk menuju ke profil
         binding.ivProfilePicture.setOnClickListener {
-            val transaction = parentFragmentManager.beginTransaction()
+            // Navigate to ProfileFragment
+            parentFragmentManager.beginTransaction().apply {
+                var profileFragment = parentFragmentManager.findFragmentByTag("ProfileFragment") as? ProfileFragment
+                if (profileFragment == null) {
+                    profileFragment = ProfileFragment()
+                    add(R.id.fragmentContainer, profileFragment, "ProfileFragment")
+                } else {
+                    show(profileFragment)
+                }
+                hide(this@HomeFragment)
+                addToBackStack(null)
+            }.commit()
 
-            // Sembunyikan fragmen saat ini
-            transaction.hide(this)
-
-            // Tampilkan ProfileFragment jika sudah ada, jika tidak tambahkan
-            var profileFragment = parentFragmentManager.findFragmentByTag("ProfileFragment") as? ProfileFragment
-            if (profileFragment == null) {
-                profileFragment = ProfileFragment()
-                transaction.add(R.id.fragmentContainer, profileFragment, "ProfileFragment")
-            } else {
-                transaction.show(profileFragment)
-            }
-
-            transaction.addToBackStack(null).commit()
+            // Update bottom navigation selected item
+            (activity as MainActivity).binding.botNav.selectedItemId = R.id.menuProfile
         }
 
         // Mengatur klik pada coffee shop untuk navigasi ke detail

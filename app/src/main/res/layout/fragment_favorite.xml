@@ -16,13 +16,13 @@
         android:layout_gravity="top">
 
         <ImageView
+            android:id="@+id/ivLogo"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="left"
             android:src="@drawable/logo" />
 
         <TextView
-            android:id="@+id/tvUsername"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

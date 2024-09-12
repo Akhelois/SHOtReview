@@ -13,7 +13,7 @@ import edu.bluejack24_1.shot_review.fragments.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    lateinit var binding: ActivityMainBinding
     private lateinit var db: FirebaseFirestore
     private lateinit var homeFragment: HomeFragment
     private lateinit var favoriteFragment: FavoriteFragment
